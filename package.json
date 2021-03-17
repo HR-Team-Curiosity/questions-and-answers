@@ -4,7 +4,8 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "test": "test"
+    "test": "test",
+    "server": "nodemon server.js"
   },
   "repository": {
     "type": "git",
@@ -18,6 +19,7 @@
   "homepage": "https://github.com/HR-Team-Curiosity/questions-and-answers#readme",
   "dependencies": {
     "express": "^4.17.1",
-    "node": "^15.10.0"
+    "node": "^15.10.0",
+    "nodemon": "^2.0.7"
   }
 }
