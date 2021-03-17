@@ -1,5 +1,6 @@
 const express = require("express");
 const path = require("path");
+const db = require("./db/index");
 
 const app = express();
 
@@ -57,6 +58,10 @@ app.put("/qa/answer/:answerId/report", (req, res) => {
 });
 
 const port = 3000;
+
+db.promise()
+  .query("SELECT * FROM questions LIMIT 2")
+  .then((data) => console.log(data));
 
 app.listen(port, () => {
   console.log("The Questions and Answers service is running");
