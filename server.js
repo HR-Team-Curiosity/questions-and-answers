@@ -56,7 +56,6 @@ app.get("/qa/:questionId/answers", (req, res) => {
     )
     .then((data) => {
       let dataWPhotos = data[0].map((row) => {
-        console.log(row.photos);
         row.photos = JSON.parse(row.photos);
         if (row.photos === null) row.photos = [];
         return row;
@@ -64,7 +63,6 @@ app.get("/qa/:questionId/answers", (req, res) => {
       responseObj.results = dataWPhotos;
     })
     .then(() => {
-      console.log(responseObj);
       res.json(responseObj);
     })
     .catch((err) => res.send(err));
@@ -73,9 +71,13 @@ app.get("/qa/:questionId/answers", (req, res) => {
 //POST
 
 app.post("/qa/:productId", (req, res) => {
-  res.send(
-    `hey you are trying to ask a question about product ${req.params.productId}!`
-  );
+  var today = new Date().toISOString().slice(0, 19).replace("T", " ");
+  db.promise()
+    .query(
+      `INSERT INTO questions
+      VALUES (NULL, ${req.params.productId}, '${req.body.body}', '${today}', '${req.body.name}', '${req.body.email}', 0, 0)`
+    )
+    .then(res.sendStatus(200));
 });
 
 app.post("/qa/:questionId/answers", (req, res) => {
@@ -85,12 +87,14 @@ app.post("/qa/:questionId/answers", (req, res) => {
 //PUT
 
 app.put("/qa/question/:questionId/helpful", (req, res) => {
+  console.log("trying to log");
   db.promise()
     .query(
       `UPDATE questions
       SET question_helpfulness = question_helpfulness + 1
       WHERE question_id = ${req.params.questionId}`
     )
+    .then(() => console.log(`added helpful to ${req.params.questionId}`))
     .then(() => res.sendStatus(200));
 });
 
