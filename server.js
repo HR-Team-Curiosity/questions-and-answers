@@ -85,13 +85,23 @@ app.post("/qa/:questionId/answers", (req, res) => {
 //PUT
 
 app.put("/qa/question/:questionId/helpful", (req, res) => {
-  res.send(
-    `hey you are trying mark question ${req.params.questionId} as helpful!`
-  );
+  db.promise()
+    .query(
+      `UPDATE questions
+      SET question_helpfulness = question_helpfulness + 1
+      WHERE question_id = ${req.params.questionId}`
+    )
+    .then(() => res.sendStatus(200));
 });
 
 app.put("/qa/question/:questionId/report", (req, res) => {
-  res.send(`hey you are trying report question ${req.params.questionId}!`);
+  db.promise()
+    .query(
+      `UPDATE questions
+    SET reported = not reported
+    WHERE question_id = ${req.params.questionId}`
+    )
+    .then(() => res.sendStatus(200));
 });
 
 app.put("/qa/answer/:answerId/helpful", (req, res) => {
