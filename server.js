@@ -22,7 +22,12 @@ app.get("/qa/:productId", (req, res) => {
   };
 
   db.promise()
-    .query(`SELECT * FROM questions WHERE product_id = ${req.params.productId}`)
+    .query(
+      `SELECT *
+    FROM questions
+    WHERE product_id = ${req.params.productId}
+    AND reported = 0`
+    )
     .then((data) => {
       responseObj.results = data[0];
     })
@@ -46,6 +51,7 @@ app.get("/qa/:questionId/answers", (req, res) => {
     FROM answers
     LEFT JOIN photos on answers.answer_id = photos.answer_id
     WHERE question_id = ${req.params.questionId}
+    AND reported = 0
     GROUP BY answers.answer_id`
     )
     .then((data) => {
