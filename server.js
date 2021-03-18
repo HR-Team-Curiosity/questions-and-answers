@@ -9,6 +9,8 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+var today = new Date().toISOString().slice(0, 19).replace("T", " ");
+
 //GET
 
 app.get("/", (req, res) => {
@@ -71,7 +73,6 @@ app.get("/qa/:questionId/answers", (req, res) => {
 //POST
 
 app.post("/qa/:productId", (req, res) => {
-  var today = new Date().toISOString().slice(0, 19).replace("T", " ");
   db.promise()
     .query(
       `INSERT INTO questions
@@ -81,7 +82,24 @@ app.post("/qa/:productId", (req, res) => {
 });
 
 app.post("/qa/:questionId/answers", (req, res) => {
-  res.send(`hey you are trying to answer question ${req.params.questionId}!`);
+  db.promise()
+    .query(
+      `INSERT INTO answers
+    VALUES (NULL, ${req.params.questionId}, '${req.body.body}', '${today}', '${req.body.name}', '${req.body.email}', 0, 0)`
+    )
+    .then((insertResponse) => {
+      const answer_id = insertResponse[0].insertId;
+      if (req.body.photos.length) {
+        let promises = req.body.photos.map((img) => {
+          return db
+            .promise()
+            .query(`INSERT INTO photos VALUES (NULL, ${answer_id}, '${img}')`);
+        });
+        return Promise.all(promises);
+      }
+      return;
+    })
+    .then(res.sendStatus(200));
 });
 
 //PUT
