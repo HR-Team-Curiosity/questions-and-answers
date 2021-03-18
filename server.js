@@ -1,9 +1,11 @@
 const express = require("express");
 const path = require("path");
+var cors = require("cors");
 const db = require("./db/index");
 
 const app = express();
 
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -14,9 +16,22 @@ app.get("/", (req, res) => {
 });
 
 app.get("/qa/:productId", (req, res) => {
-  res.send(
-    `hey you are trying to get the questions for product ${req.params.productId}!`
-  );
+  var responseObj = {
+    product_id: req.params.productId,
+    results: [],
+  };
+
+  db.promise()
+    .query(`SELECT * FROM questions WHERE product_id = ${req.params.productId}`)
+    .then((data) => {
+      if (!data[0].length) throw "No questions found!";
+      responseObj.results = data[0];
+    })
+    .then(() => {
+      console.log(responseObj);
+      res.json(responseObj);
+    })
+    .catch((err) => res.send(err));
 });
 
 app.get("/qa/:questionId/answers", (req, res) => {
@@ -58,10 +73,6 @@ app.put("/qa/answer/:answerId/report", (req, res) => {
 });
 
 const port = 3000;
-
-db.promise()
-  .query("SELECT * FROM questions LIMIT 2")
-  .then((data) => console.log(data));
 
 app.listen(port, () => {
   console.log("The Questions and Answers service is running");
