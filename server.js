@@ -98,18 +98,30 @@ app.put("/qa/question/:questionId/report", (req, res) => {
   db.promise()
     .query(
       `UPDATE questions
-    SET reported = not reported
-    WHERE question_id = ${req.params.questionId}`
+      SET reported = not reported
+      WHERE question_id = ${req.params.questionId}`
     )
     .then(() => res.sendStatus(200));
 });
 
 app.put("/qa/answer/:answerId/helpful", (req, res) => {
-  res.send(`hey you are trying mark answer ${req.params.answerId} as helpful!`);
+  db.promise()
+    .query(
+      `UPDATE answers
+      SET helpfulness = helpfulness + 1
+      WHERE answer_id = ${req.params.answerId}`
+    )
+    .then(() => res.sendStatus(200));
 });
 
 app.put("/qa/answer/:answerId/report", (req, res) => {
-  res.send(`hey you are trying report answer ${req.params.answerId}!`);
+  db.promise()
+    .query(
+      `UPDATE answers
+      SET reported = not reported
+      WHERE answer_id = ${req.params.answerId}`
+    )
+    .then(() => res.sendStatus(200));
 });
 
 const port = 3000;
