@@ -7,7 +7,7 @@ services:
       DB_PORT: "${DB_PORT}"
       DB_USER: "${DB_USERNAME}"
       DB_PASSWORD: "${DB_PASSWORD}"
-      DB_NAME: "${DB_NAME}"
+      DB_NAME: "${DB_DATABASE}"
     ports:
       - "3000:3000" # Expose port 3000 on host
     depends_on:
