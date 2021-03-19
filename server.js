@@ -81,6 +81,7 @@ app.post("/qa/:productId", (req, res) => {
       `INSERT INTO questions
       VALUES (NULL, ${req.params.productId}, '${req.body.body}', '${today}', '${req.body.name}', '${req.body.email}', 0, 0)`
     )
+    .catch((err)=>res.send(err))
     .then(res.sendStatus(200));
 });
 
