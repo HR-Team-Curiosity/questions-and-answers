@@ -1,10 +1,11 @@
 const mysql = require("mysql2");
-const { dbToken } = require("../config.js");
+require("dotenv").config("../.env");
 
 const db = mysql.createPool({
-  user: "root",
-  password: dbToken,
-  database: "questions_and_answers",
+  user: process.env.DB_USERNAME,
+  password: process.env.DB_PASSWORD,
+  host: process.env.DB_HOST,
+  database: process.env.DB_DATABASE,
 });
 
 module.exports = db;

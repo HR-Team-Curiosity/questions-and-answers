@@ -1,4 +1,5 @@
 const express = require("express");
+require("dotenv").config();
 const path = require("path");
 var cors = require("cors");
 const db = require("./db/index");
@@ -17,6 +18,7 @@ app.get("/", (req, res) => {
   res.send("hello world");
 });
 
+//get questions
 app.get("/qa/:productId", (req, res) => {
   var responseObj = {
     product_id: req.params.productId,
@@ -39,10 +41,11 @@ app.get("/qa/:productId", (req, res) => {
     .catch((err) => res.send(err));
 });
 
+//get answers
 app.get("/qa/:questionId/answers", (req, res) => {
   var responseObj = {
     question: req.params.questionId,
-    page: req.params.page || 0,
+    page: req.params.page || 1,
     count: req.params.count || 5,
     results: [],
   };
@@ -71,7 +74,7 @@ app.get("/qa/:questionId/answers", (req, res) => {
 });
 
 //POST
-
+//add question
 app.post("/qa/:productId", (req, res) => {
   db.promise()
     .query(
@@ -81,6 +84,7 @@ app.post("/qa/:productId", (req, res) => {
     .then(res.sendStatus(200));
 });
 
+//add answer
 app.post("/qa/:questionId/answers", (req, res) => {
   db.promise()
     .query(
