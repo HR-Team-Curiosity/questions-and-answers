@@ -13,7 +13,7 @@ CREATE TABLE questions (
   email VARCHAR(60) NOT NULL,
   reported BOOLEAN NOT NULL DEFAULT 0,
   question_helpfulness INT NOT NULL DEFAULT 0,
-  PRIMARY KEY (id)
+  PRIMARY KEY (question_id)
 );
 
 CREATE TABLE answers (
@@ -25,8 +25,8 @@ CREATE TABLE answers (
   email VARCHAR(60) NOT NULL,
   reported BOOLEAN NOT NULL DEFAULT 0,
   helpfulness INT NOT NULL DEFAULT 0,
-  PRIMARY KEY (id),
-  FOREIGN KEY (question_id) REFERENCES questions(id)
+  PRIMARY KEY (answer_id),
+  FOREIGN KEY (question_id) REFERENCES questions(question_id)
 );
 
 CREATE TABLE photos (
@@ -34,5 +34,5 @@ CREATE TABLE photos (
   answer_id INT NOT NULL,
   url VARCHAR(1000) NOT NULL,
   PRIMARY KEY (id),
-  FOREIGN KEY (answer_id) REFERENCES answers(id)
+  FOREIGN KEY (answer_id) REFERENCES answers(answer_id)
 );
