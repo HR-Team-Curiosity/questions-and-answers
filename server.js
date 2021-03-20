@@ -95,15 +95,19 @@ app.post("/qa/:productId", (req, res) => {
 
 //add answer
 app.post("/qa/:questionId/answers", (req, res) => {
+  let args = {
+    answer_id: null,
+    question_id: req.params.questionId,
+    body: req.body.body,
+    date: today,
+    answerer_name: req.body.name,
+    email: req.body.email,
+    reported: 0,
+    helpfulness: 0,
+  };
+
   db.promise()
-    .query(
-      `INSERT INTO answers
-    VALUES (NULL, ${mysql.escape(req.params.questionId)}, '${mysql.escape(
-        req.body.body
-      )}', '${today}', '${mysql.escape(req.body.name)}', '${mysql.escape(
-        req.body.email
-      )}', 0, 0)`
-    )
+    .query(`INSERT INTO answers SET ?`, args)
     .then((insertResponse) => {
       const answer_id = insertResponse[0].insertId;
       if (req.body.photos.length) {
@@ -127,7 +131,8 @@ app.put("/qa/question/:questionId/helpful", (req, res) => {
     .query(
       `UPDATE questions
       SET question_helpfulness = question_helpfulness + 1
-      WHERE question_id = ${req.params.questionId}`
+      WHERE question_id = ?`,
+      [req.params.questionId]
     )
     .then(() => console.log(`added helpful to ${req.params.questionId}`))
     .then(() => res.sendStatus(200));
