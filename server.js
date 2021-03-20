@@ -3,6 +3,7 @@ require("dotenv").config();
 const path = require("path");
 var cors = require("cors");
 const db = require("./db/index");
+const mysql = require("mysql2");
 
 const app = express();
 
