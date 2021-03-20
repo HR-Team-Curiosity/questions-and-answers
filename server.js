@@ -79,7 +79,11 @@ app.post("/qa/:productId", (req, res) => {
   db.promise()
     .query(
       `INSERT INTO questions
-      VALUES (NULL, ${req.params.productId}, '${req.body.body}', '${today}', '${req.body.name}', '${req.body.email}', 0, 0)`
+      VALUES (NULL, ${mysql.escape(req.params.productId)}, '${mysql.escape(
+        req.body.body
+      )}', '${today}', '${mysql.escape(req.body.name)}', '${mysql.escape(
+        req.body.email
+      )}', 0, 0)`
     )
     .then(res.sendStatus(200));
 });
@@ -89,7 +93,11 @@ app.post("/qa/:questionId/answers", (req, res) => {
   db.promise()
     .query(
       `INSERT INTO answers
-    VALUES (NULL, ${req.params.questionId}, '${req.body.body}', '${today}', '${req.body.name}', '${req.body.email}', 0, 0)`
+    VALUES (NULL, ${mysql.escape(req.params.questionId)}, '${mysql.escape(
+        req.body.body
+      )}', '${today}', '${mysql.escape(req.body.name)}', '${mysql.escape(
+        req.body.email
+      )}', 0, 0)`
     )
     .then((insertResponse) => {
       const answer_id = insertResponse[0].insertId;
@@ -153,8 +161,6 @@ app.put("/qa/answer/:answerId/report", (req, res) => {
 const port = 3000;
 
 app.listen(port, () => {
-  console.log(process.env.DB_USER);
-  console.log(process.env.DB_PASSWORD);
   console.log("The Questions and Answers service is running");
   console.log(`To get started, visit: http://localhost:${port}`);
 });
