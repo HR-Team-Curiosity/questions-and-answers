@@ -112,9 +112,12 @@ app.post("/qa/:questionId/answers", (req, res) => {
       const answer_id = insertResponse[0].insertId;
       if (req.body.photos.length) {
         let promises = req.body.photos.map((img) => {
-          return db
-            .promise()
-            .query(`INSERT INTO photos VALUES (NULL, ${answer_id}, '${img}')`);
+          let args = {
+            id: null,
+            answer_id: answer_id,
+            url: img,
+          };
+          return db.promise().query(`INSERT INTO photos SET ?`, args);
         });
         return Promise.all(promises);
       }
@@ -126,7 +129,6 @@ app.post("/qa/:questionId/answers", (req, res) => {
 //PUT
 
 app.put("/qa/question/:questionId/helpful", (req, res) => {
-  console.log("trying to log");
   db.promise()
     .query(
       `UPDATE questions
@@ -134,7 +136,6 @@ app.put("/qa/question/:questionId/helpful", (req, res) => {
       WHERE question_id = ?`,
       [req.params.questionId]
     )
-    .then(() => console.log(`added helpful to ${req.params.questionId}`))
     .then(() => res.sendStatus(200));
 });
 
@@ -143,7 +144,8 @@ app.put("/qa/question/:questionId/report", (req, res) => {
     .query(
       `UPDATE questions
       SET reported = not reported
-      WHERE question_id = ${req.params.questionId}`
+      WHERE question_id = ?`,
+      [req.params.questionId]
     )
     .then(() => res.sendStatus(200));
 });
@@ -153,7 +155,8 @@ app.put("/qa/answer/:answerId/helpful", (req, res) => {
     .query(
       `UPDATE answers
       SET helpfulness = helpfulness + 1
-      WHERE answer_id = ${req.params.answerId}`
+      WHERE answer_id = ?`,
+      [req.params.answerId]
     )
     .then(() => res.sendStatus(200));
 });
@@ -163,7 +166,8 @@ app.put("/qa/answer/:answerId/report", (req, res) => {
     .query(
       `UPDATE answers
       SET reported = not reported
-      WHERE answer_id = ${req.params.answerId}`
+      WHERE answer_id = ?`,
+      [req.params.answerId]
     )
     .then(() => res.sendStatus(200));
 });
