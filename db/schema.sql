@@ -13,7 +13,8 @@ CREATE TABLE questions (
   email VARCHAR(60) NOT NULL,
   reported BOOLEAN NOT NULL DEFAULT 0,
   question_helpfulness INT NOT NULL DEFAULT 0,
-  PRIMARY KEY (question_id)
+  PRIMARY KEY (question_id),
+  CREATE INDEX product_id ON questions (product_id)
 );
 
 CREATE TABLE answers (
