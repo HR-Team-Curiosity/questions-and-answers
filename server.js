@@ -77,15 +77,19 @@ app.get("/qa/:questionId/answers", (req, res) => {
 //POST
 //add question
 app.post("/qa/:productId", (req, res) => {
+  let args = {
+    question_id: null,
+    product_id: req.params.productId,
+    question_body: req.body.body,
+    question_date: today,
+    asker_name: req.body.name,
+    email: req.body.email,
+    reported: 0,
+    question_helpfulness: 0,
+  };
+
   db.promise()
-    .query(
-      `INSERT INTO questions
-      VALUES (NULL, ${mysql.escape(req.params.productId)}, '${mysql.escape(
-        req.body.body
-      )}', '${today}', '${mysql.escape(req.body.name)}', '${mysql.escape(
-        req.body.email
-      )}', 0, 0)`
-    )
+    .query(`INSERT INTO questions SET ?`, args)
     .then(res.sendStatus(200));
 });
 
