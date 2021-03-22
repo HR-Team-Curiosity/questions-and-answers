@@ -24,7 +24,7 @@ services:
     networks:
       - app-network
     volumes:
-      - ../data:./data
+      - ../../data:./data
 networks: # Specify the network for bridging
   app-network:
     driver: bridge
