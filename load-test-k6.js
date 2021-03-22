@@ -19,17 +19,17 @@ var answerObj = {
 };
 
 ////GET QUESTIONS
-// export default function () {
-//   const productId = getRandomArbitrary(900000, 1000011);
-//   const response = http.get(`http://localhost:3000/qa/${productId}`);
-//   check(response, {
-//     "is status 200": (r) => r.status === 200,
-//     "is id the same we asked": (r) => {
-//       const id = Number(r.json("product_id"));
-//       return id === productId;
-//     },
-//   });
-// }
+export default function () {
+  const productId = getRandomArbitrary(900000, 1000011);
+  const response = http.get(`http://localhost:3000/qa/${productId}`);
+  check(response, {
+    "is status 200": (r) => r.status === 200,
+    "is id the same we asked": (r) => {
+      const id = Number(r.json("product_id"));
+      return id === productId;
+    },
+  });
+}
 
 //// GET ANSWERS
 // export default function () {
@@ -88,18 +88,18 @@ var answerObj = {
 //   });
 // }
 
-//// POST ANSWER
-export default function () {
-  const questionId = getRandomArbitrary(3000000, 3521637);
-  const response = http.post(
-    `http://localhost:3000/qa/${questionId}/answers`,
-    JSON.stringify(answerObj),
-    { headers: { "Content-Type": "application/json" } }
-  );
-  check(response, {
-    "is status 200": (r) => r.status === 200,
-  });
-}
+// //// POST ANSWER
+// export default function () {
+//   const questionId = getRandomArbitrary(3000000, 3521637);
+//   const response = http.post(
+//     `http://localhost:3000/qa/${questionId}/answers`,
+//     JSON.stringify(answerObj),
+//     { headers: { "Content-Type": "application/json" } }
+//   );
+//   check(response, {
+//     "is status 200": (r) => r.status === 200,
+//   });
+// }
 
 //// POST QUESTION
 // export default function () {
@@ -115,7 +115,7 @@ export default function () {
 
 export let options = {
   vus: 1,
-  duration: "1s",
+  duration: "5s",
   // thresholds: {
   //   "failed requests": ["rate<0.02"],
   //   http_req_duration: ["p(95)<500"],

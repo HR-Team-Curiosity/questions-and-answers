@@ -13,8 +13,7 @@ CREATE TABLE questions (
   email VARCHAR(60) NOT NULL,
   reported BOOLEAN NOT NULL DEFAULT 0,
   question_helpfulness INT NOT NULL DEFAULT 0,
-  PRIMARY KEY (question_id),
-  CREATE INDEX product_id ON questions (product_id)
+  PRIMARY KEY (question_id)
 );
 
 CREATE TABLE answers (
@@ -37,3 +36,11 @@ CREATE TABLE photos (
   PRIMARY KEY (id),
   FOREIGN KEY (answer_id) REFERENCES answers(answer_id)
 );
+
+
+LOAD DATA LOCAL INFILE '/home/ec2-user/data/questions_top100.csv'
+INTO TABLE questions
+FIELDS TERMINATED BY ','
+ENCLOSED BY '"'
+LINES TERMINATED BY '\n'
+IGNORE 1 ROWS;

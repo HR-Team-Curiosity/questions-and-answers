@@ -106,8 +106,6 @@ app.post("/qa/:questionId/answers", (req, res) => {
     helpfulness: 0,
   };
 
-  console.log(req.body.photos);
-
   db.promise()
     .query(`INSERT INTO answers SET ?`, args)
     .then((insertResponse) => {
