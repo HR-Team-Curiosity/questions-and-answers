@@ -3,13 +3,13 @@ require("dotenv").config();
 const path = require("path");
 var cors = require("cors");
 const db = require("./db/index");
-const mysql = require("mysql2");
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(express.static(__dirname + "/public"));
 
 var today = new Date().toISOString().slice(0, 19).replace("T", " ");
 

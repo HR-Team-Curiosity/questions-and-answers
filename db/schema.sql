@@ -37,9 +37,25 @@ CREATE TABLE photos (
   FOREIGN KEY (answer_id) REFERENCES answers(answer_id)
 );
 
+CREATE INDEX product_id ON questions(product_id);
 
-LOAD DATA LOCAL INFILE '/home/ec2-user/data/questions_top100.csv'
+
+LOAD DATA LOCAL INFILE './db-data/full_set/questions.csv'
 INTO TABLE questions
+FIELDS TERMINATED BY ','
+ENCLOSED BY '"'
+LINES TERMINATED BY '\n'
+IGNORE 1 ROWS;
+
+LOAD DATA LOCAL INFILE './db-data/full_set/answers.csv'
+INTO TABLE answers
+FIELDS TERMINATED BY ','
+ENCLOSED BY '"'
+LINES TERMINATED BY '\n'
+IGNORE 1 ROWS;
+
+LOAD DATA LOCAL INFILE './db-data/full_set/answers_photos.csv'
+INTO TABLE photos
 FIELDS TERMINATED BY ','
 ENCLOSED BY '"'
 LINES TERMINATED BY '\n'
