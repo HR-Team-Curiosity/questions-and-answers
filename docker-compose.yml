@@ -25,6 +25,7 @@ services:
       - app-network
     volumes:
       - ~/data:/data
+      - dbdata:/var/lib/mysql
 networks: # Specify the network for bridging
   app-network:
     driver: bridge
